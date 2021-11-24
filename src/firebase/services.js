@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, serverTimestamp, updateDoc, getDoc, deleteDoc } from 'firebase/firestore'
 import { db } from './config'
 
 export const addDocument = async (coll, data) => {
@@ -14,4 +14,16 @@ export const updateRoom = async (id, dataUpdate) => {
     await updateDoc(roomRef, {
         members: dataUpdate
     });
+}
+
+export const getdata = async (coll, id)=> {
+    const document = doc(db, coll, id)
+    const value = await getDoc(document)
+    const data = await value.data()
+    return data
+}
+
+export const deteteData = async (coll, id)=> {
+    const document = doc(db, coll, id)
+    await deleteDoc(document)
 }

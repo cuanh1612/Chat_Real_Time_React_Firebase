@@ -1,12 +1,12 @@
-import {useColorModeValue, VStack, HStack, Text, Avatar, Tag} from '@chakra-ui/react'
+import { useColorModeValue, VStack, HStack, Text, Avatar, Tag } from '@chakra-ui/react'
 import { useContext } from 'react';
 import { AppContext } from '../../context/AppProvider';
-import moment from 'moment'
+import { formatDistance } from 'date-fns'
 
-export default function MessageMember({mess}) {
-    const {dataUsers} = useContext(AppContext)
+export default function MessageMember({ mess }) {
+    const { dataUsers } = useContext(AppContext)
     const user = dataUsers.find(e => (e.uid === mess.idUser))
-    const timeSeconds = mess.createAt?mess.createAt.seconds:0
+    const timeSeconds = mess.createAt ? mess.createAt.seconds * 1000 : 0
 
     const bgMessage = useColorModeValue('blue.100', null)
     const BoxShadow = useColorModeValue('0px 0px 10px 0px #bee3f8b5', null)
@@ -16,7 +16,7 @@ export default function MessageMember({mess}) {
             <HStack spacing={4}>
                 <VStack alignItems="end">
                     <Text>{user && user.displayName}</Text>
-                    <Tag color="gray">{ moment.utc(timeSeconds * 1000).format('dd:HH:mm')}</Tag>
+                    <Tag color="gray">{formatDistance(Date.now(), timeSeconds, { addSuffix: true })}</Tag>
                 </VStack>
                 <Avatar size='md' src={user && user.photoURL} name={user && user.displayName} />
 
@@ -29,7 +29,7 @@ export default function MessageMember({mess}) {
                 position: 'absolute',
                 top: -1,
                 right: 3,
-                bg: { bgMessage },
+                bg: `${bgMessage}`,
                 transform: "rotate(45deg)"
             }} p={5} borderRadius="5px" maxWidth="600px">
                 {mess.message}

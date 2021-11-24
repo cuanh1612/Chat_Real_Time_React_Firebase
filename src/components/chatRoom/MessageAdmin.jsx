@@ -1,13 +1,13 @@
 import {HStack, VStack, Text, useColorModeValue, Tag, Avatar} from '@chakra-ui/react'
 import { useContext } from 'react'
 import { AppContext } from '../../context/AppProvider'
-import moment from 'moment'
+import {formatDistance} from 'date-fns'
 
 export default function MessageAdmin({mess}) {
     const {dataUsers} = useContext(AppContext)
     const user = dataUsers.find(e => (e.uid === mess.idUser))
 
-    const timeSecond = mess.createAt ? mess.createAt.seconds : 0
+    const timeSecond = mess.createAt ? mess.createAt.seconds * 1000 : 0
 
     const bgMessageAdmin = useColorModeValue('teal.100', null)
     const BoxShadowAdmin = useColorModeValue('0px 0px 10px 0px #b2f5eaab', null)
@@ -18,7 +18,7 @@ export default function MessageAdmin({mess}) {
                 <Avatar size='md' src={user && user.photoURL} name={user && user.displayName} />
                 <VStack alignItems="start">
                     <Text>{user && user.displayName}</Text>
-                    <Tag color="gray">{ moment.utc(timeSecond * 1000).format('dd:HH:mm')}</Tag>
+                    <Tag color="gray">{formatDistance(Date.now(), timeSecond, {addSuffix: true})}</Tag>
                 </VStack>
 
             </HStack>
@@ -29,7 +29,7 @@ export default function MessageAdmin({mess}) {
                 position: 'absolute',
                 top: -1,
                 left: 3,
-                bg: { bgMessageAdmin },
+                bg: `${ bgMessageAdmin }`,
                 transform: "rotate(45deg)"
             }} p={5} borderRadius="5px" maxWidth="600px">
                 {
