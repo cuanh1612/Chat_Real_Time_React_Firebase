@@ -18,10 +18,5 @@ const analytics = getAnalytics(app);
 const db = getFirestore()
 const auth = getAuth(app)
 
-// if(process.env.REACT_APP_USER === 'DEVELOPER'){
-//   connectAuthEmulator(auth,"http://localhost:9099")
-//   connectFirestoreEmulator(db, 'localhost', 8080)
-// }
-
 export { app, analytics, db, auth };
 
